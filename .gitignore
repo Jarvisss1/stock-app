@@ -30,6 +30,14 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# ... other ignored files
+node_modules/
+.expo/
+
+# Add this line to ignore your secrets file
+.env
+
+
 # local env files
 .env*.local
 

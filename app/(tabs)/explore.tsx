@@ -1,110 +1,147 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState, useCallback } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  Alert,
+} from "react-native";
+import { Link, useFocusEffect } from "expo-router";
+import { useWatchlist } from "../../hooks/useWatchlist";
+import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "@/components/ThemedText";
+import { FontAwesome } from "@expo/vector-icons";
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+export default function WatchlistScreen() {
+  const { watchlists, createWatchlist, loadWatchlists, deleteWatchlist } =
+    useWatchlist();
+  const [newWatchlistName, setNewWatchlistName] = useState("");
 
-export default function TabTwoScreen() {
+  useFocusEffect(
+    useCallback(() => {
+      loadWatchlists();
+    }, [])
+  );
+
+  const handleCreateWatchlist = () => {
+    createWatchlist(newWatchlistName);
+    setNewWatchlistName("");
+  };
+
+  const watchlistNames = Object.keys(watchlists);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <ThemedView style={styles.container}>
+      <ThemedText style={styles.header}>My Watchlists</ThemedText>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Create new watchlist..."
+          value={newWatchlistName}
+          onChangeText={setNewWatchlistName}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handleCreateWatchlist}
+        >
+          <Text style={styles.addButtonText}>Create</Text>
+        </TouchableOpacity>
+      </View>
+
+      {watchlistNames.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <ThemedText style={styles.emptyText}>No watchlists yet.</ThemedText>
+          <ThemedText style={styles.emptySubText}>
+            Create one above to get started!
           </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+        </View>
+      ) : (
+        <FlatList
+          data={watchlistNames}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => (
+            <Link href={`/watchlist/${item}`} asChild>
+              <TouchableOpacity style={styles.watchlistItem}>
+                <ThemedText style={styles.watchlistName}>{item}</ThemedText>
+                <TouchableOpacity
+                  onPress={() => deleteWatchlist(item)}
+                  style={styles.deleteButton}
+                >
+                  <FontAwesome name="trash-o" size={24} color="red" />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </Link>
+          )}
+        />
+      )}
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    padding: 15,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  header: {
+    fontSize: 28,
+    fontWeight: "bold",
+    paddingTop: 40,
+    marginBottom: 20,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    marginRight: 10,
+    backgroundColor: "white",
+  },
+  addButton: {
+    backgroundColor: "#0a7ea4",
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    borderRadius: 8,
+  },
+  addButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 18,
+    color: "gray",
+  },
+  emptySubText: {
+    fontSize: 14,
+    color: "darkgray",
+    marginTop: 5,
+  },
+  watchlistItem: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  watchlistName: {
+    fontSize: 18,
+  },
+  deleteButton: {
+    padding: 5,
   },
 });

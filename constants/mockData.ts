@@ -1,0 +1,143 @@
+// This file contains mock data to be used when USE_MOCK_DATA is true.
+// This helps in developing the UI without hitting API rate limits.
+
+export const mockTopGainersLosers = {
+  metadata: "Top gainers and losers ranked by real-time change.",
+  last_updated: "2024-08-20 16:15:59 US/Eastern",
+  top_gainers: [
+    {
+      ticker: "NVDA",
+      price: "135.58",
+      change_amount: "8.14",
+      change_percentage: "6.387%",
+      volume: "68720173",
+    },
+    {
+      ticker: "AAPL",
+      price: "217.65",
+      change_amount: "3.45",
+      change_percentage: "1.61%",
+      volume: "54208900",
+    },
+    {
+        ticker: "MSFT",
+        price: "450.12",
+        change_amount: "5.78",
+        change_percentage: "1.30%",
+        volume: "23456789",
+    },
+    {
+        ticker: "GOOGL",
+        price: "178.45",
+        change_amount: "2.10",
+        change_percentage: "1.19%",
+        volume: "31098765",
+    },
+  ],
+  top_losers: [
+    {
+      ticker: "TSLA",
+      price: "180.11",
+      change_amount: "-2.97",
+      change_percentage: "-1.623%",
+      volume: "98765432",
+    },
+    {
+      ticker: "AMZN",
+      price: "183.50",
+      change_amount: "-1.25",
+      change_percentage: "-0.68%",
+      volume: "45678901",
+    },
+    {
+        ticker: "META",
+        price: "495.30",
+        change_amount: "-4.20",
+        change_percentage: "-0.84%",
+        volume: "18901234",
+    },
+    {
+        ticker: "JPM",
+        price: "198.76",
+        change_amount: "-0.99",
+        change_percentage: "-0.50%",
+        volume: "10293847",
+    },
+  ],
+};
+
+export const mockCompanyOverview = {
+    Symbol: 'IBM',
+    AssetType: 'Common Stock',
+    Name: 'International Business Machines Corporation',
+    Description: 'International Business Machines Corporation (IBM) is an American multinational technology company headquartered in Armonk, New York, with operations in over 170 countries.',
+    CIK: '51143',
+    Exchange: 'NYSE',
+    Currency: 'USD',
+    Country: 'USA',
+    Sector: 'TECHNOLOGY',
+    Industry: 'COMPUTER & OFFICE EQUIPMENT',
+    Address: '1 NEW ORCHARD ROAD, ARMONK, NY, US',
+    MarketCapitalization: '156797824000',
+    PERatio: '19.5',
+    '52WeekHigh': '199.18',
+    '52WeekLow': '137.66',
+    '50DayMovingAverage': '167.89',
+};
+
+export const mockTimeSeriesDaily = {
+    "Time Series (Daily)": {
+        "2024-09-06": { "1. open": "170.10", "4. close": "171.45" },
+        "2024-09-05": { "1. open": "169.28", "4. close": "170.00" },
+        "2024-09-04": { "1. open": "171.05", "4. close": "169.10" },
+    }
+};
+
+export const mockRelianceOverview = {
+    "Symbol": "RELIANCE.BSE",
+    "AssetType": "Common Stock",
+    "Name": "Reliance Industries Limited",
+    "Description": "Reliance Industries Limited is an Indian multinational conglomerate company headquartered in Mumbai, India. Its diverse businesses include energy, petrochemicals, natural gas, retail, telecommunications, mass media, and textiles.",
+    "CIK": "1005186",
+    "Exchange": "BSE",
+    "Currency": "INR",
+    "Country": "INDIA",
+    "Sector": "Energy Minerals",
+    "Industry": "Oil & Gas Production",
+    "Address": "MAKER CHAMBERS IV, 222, NARIMAN POINT, MUMBAI, INDIA, 400021",
+    "FiscalYearEnd": "March",
+    "LatestQuarter": "2024-06-30",
+    "MarketCapitalization": "16000000000000",
+    "EBITDA": "1200000000000",
+    "PERatio": "28",
+    "PEGRatio": "1.5",
+    "BookValue": "1500",
+    "DividendPerShare": "9",
+    "DividendYield": "0.006",
+    "EPS": "95",
+    "RevenuePerShareTTM": "600",
+    "ProfitMargin": "0.15",
+    "OperatingMarginTTM": "0.20",
+    "ReturnOnAssetsTTM": "0.05",
+    "ReturnOnEquityTTM": "0.12",
+    "RevenueTTM": "8000000000000",
+    "GrossProfitTTM": "2000000000000",
+    "DilutedEPSTTM": "95",
+    "QuarterlyEarningsGrowthYOY": "0.1",
+    "QuarterlyRevenueGrowthYOY": "0.15",
+    "AnalystTargetPrice": "3000",
+    "TrailingPE": "28",
+    "ForwardPE": "25",
+    "PriceToSalesRatioTTM": "2",
+    "PriceToBookRatio": "2.5",
+    "EVToRevenue": "2.2",
+    "EVToEBITDA": "13",
+    "Beta": "1.1",
+    "52WeekHigh": "2900",
+    "52WeekLow": "2000",
+    "50DayMovingAverage": "2700",
+    "200DayMovingAverage": "2500",
+    "SharesOutstanding": "6000000000",
+    "DividendDate": "2024-08-21",
+    "ExDividendDate": "2024-08-08"
+};
