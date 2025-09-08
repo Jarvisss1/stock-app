@@ -72,8 +72,8 @@ Follow these instructions to set up and run the project locally.
 ### 2. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd <your-repository-directory>
+git clone https://github.com/Jarvisss1/stock-app
+cd stock-app
 ```
 
 ### 3. Install Dependencies
