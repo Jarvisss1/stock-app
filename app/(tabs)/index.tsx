@@ -6,6 +6,7 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { Link } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
@@ -22,12 +23,40 @@ type Stock = {
   change_percentage: string;
 };
 
+// const mutualFunds = [
+//   "HDFC Equity Fund - Growth",
+//   "SBI Bluechip Fund - Direct Plan",
+//   "ICICI Prudential Value Discovery Fund",
+//   "Axis Long Term Equity Fund - ELSS",
+//   "Nippon India Small Cap Fund",
+//   "Kotak Standard Multicap Fund",
+//   "Mirae Asset Emerging Bluechip Fund",
+//   "UTI Nifty Index Fund",
+//   "Franklin India Focused Equity Fund",
+//   "Aditya Birla Sun Life Tax Relief 96",
+//   "Motilal Oswal Nasdaq 100 Fund of Fund",
+//   "DSP Midcap Fund - Direct Plan",
+//   "Tata Digital India Fund",
+//   "Canara Robeco Bluechip Equity Fund",
+//   "Invesco India Contra Fund",
+// ];
+
+
 export default function ExploreScreen() {
   const { theme } = useTheme(); // Get the current theme
   const [topGainers, setTopGainers] = useState<Stock[]>([]);
   const [topLosers, setTopLosers] = useState<Stock[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchText, setSearchText] = useState("");
+  // const [filteredList , setFilteredList] = useState(mutualFunds);
+
+  // useEffect(() => {
+  //   const filtered = mutualFunds.filter(fund =>
+  //     fund.toLowerCase().includes(searchText.toLowerCase())
+  //   );
+  //   setFilteredList(filtered);
+  // }, [searchText]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -115,6 +144,20 @@ export default function ExploreScreen() {
 
   return (
     <ThemedView style={styles.container}>
+      <TextInput
+          // style={styles.input}
+          onChangeText={setSearchText}
+          value={searchText}
+        />
+      {/* <FlatList
+        data={filteredList}
+        keyExtractor={(item, index) => `${item}-${index}`}
+        renderItem={({ item }) => (
+          <View style={{ padding: 10, borderBottomWidth: 1, borderColor: '#ccc' }}>
+            <ThemedText>{item}</ThemedText>
+          </View>
+        )}
+      ></FlatList> */}
       <ScrollView>
         {renderSection("Top Gainers", topGainers, "gainers")}
         {renderSection("Top Losers", topLosers, "losers")}

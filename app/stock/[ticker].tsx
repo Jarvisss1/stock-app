@@ -24,6 +24,8 @@ import { ThemedText } from "@/components/ThemedText";
 import { getCache, setCache } from "../utils/cache";
 import { useTheme } from "../context/ThemeContext";
 
+const ALPHA_VANTAGE_API_KEY_HARD = "YQBL5FEH4FK78QYC";
+
 export default function StockDetailsScreen() {
   const params = useLocalSearchParams<{
     ticker: string;
@@ -90,7 +92,7 @@ export default function StockDetailsScreen() {
       // --- Primary Logic: Try fetching LIVE data ---
       try {
         // Fetch Live Overview
-        const overviewUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+        const overviewUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${ALPHA_VANTAGE_API_KEY_HARD}`;
         const overviewRes = await fetch(overviewUrl);
         const overviewData = await overviewRes.json();
         // Check for rate limit message
@@ -105,10 +107,12 @@ export default function StockDetailsScreen() {
         setDetails(overviewData);
 
         // Fetch Live Time Series
-        const timeSeriesUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&outputsize=full&apikey=${ALPHA_VANTAGE_API_KEY}`;
+        const timeSeriesUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&outputsize=compact&apikey=${ALPHA_VANTAGE_API_KEY_HARD}`;
         const timeSeriesRes = await fetch(timeSeriesUrl);
         const timeSeriesData = await timeSeriesRes.json();
         const dailyData = timeSeriesData["Time Series (Daily)"];
+
+
         if (dailyData) {
           const formattedData = Object.keys(dailyData)
             .map((date) => ({
@@ -125,6 +129,7 @@ export default function StockDetailsScreen() {
           }
           throw new Error("Could not fetch live time series data.");
         }
+        
       } catch (e: any) {
         // --- Fallback Logic: If live data fails due to rate limit ---
         if (e.message === "API_LIMIT") {
